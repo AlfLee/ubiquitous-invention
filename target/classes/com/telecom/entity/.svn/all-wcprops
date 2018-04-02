@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/2017/!svn/ver/18837/MyProject/MyProject-Z/src/main/java/com/telecom/entity
+END
+Equipment.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/2017/!svn/ver/16989/MyProject/MyProject-Z/src/main/java/com/telecom/entity/Equipment.java
+END
+DataBaseInfo.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/2017/!svn/ver/18837/MyProject/MyProject-Z/src/main/java/com/telecom/entity/DataBaseInfo.java
+END
+DataInfo.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/2017/!svn/ver/17606/MyProject/MyProject-Z/src/main/java/com/telecom/entity/DataInfo.java
+END
+BaseModel.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/2017/!svn/ver/16989/MyProject/MyProject-Z/src/main/java/com/telecom/entity/BaseModel.java
+END
+user_entity.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/2017/!svn/ver/16989/MyProject/MyProject-Z/src/main/java/com/telecom/entity/user_entity.java
+END
+SvmModel_entity.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/2017/!svn/ver/19805/MyProject/MyProject-Z/src/main/java/com/telecom/entity/SvmModel_entity.java
+END
+DataRowDetail.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/2017/!svn/ver/17887/MyProject/MyProject-Z/src/main/java/com/telecom/entity/DataRowDetail.java
+END
+DataColumnDetail.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/2017/!svn/ver/17887/MyProject/MyProject-Z/src/main/java/com/telecom/entity/DataColumnDetail.java
+END

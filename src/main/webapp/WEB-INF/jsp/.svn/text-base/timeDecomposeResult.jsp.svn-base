@@ -1,0 +1,63 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Document</title>
+<c:import url="global.jsp"></c:import>
+
+<style>
+ul{overflow:hidden;width:100%;}
+ul li{width:10%;float:left;}
+</style>  
+</head>
+<body>
+<div class="layui-layout layui-layout-admin kit-layout-admin">
+             <ul class="layui-nav  kit-nav">
+                <li class="layui-nav-item"><a href="javascript:;" >算法详情</a></li>
+                <li class="layui-nav-item"><a href="timeDomain;">特征分解</a></li>
+                <li class="layui-nav-item"><a href="timeDecomposeResult;">分解结果</a></li>
+            </ul> 
+        </div>
+ <div class="layui-layout layui-layout-admin kit-layout-admin">
+             <ul class="layui-nav  kit-nav" style="background-color:rgb(242,242,242)">
+                <li class="layui-nav-item" ><a href="timeDecomposeResult;" style="color:rgb(0,0,0)" >分解表</a></li>
+                <li class="layui-nav-item" ><a href="javascript:;" style="color:rgb(0,0,0)">分解图</a></li>
+            </ul> 
+ </div>
+    
+  <table class="layui-hide" id="test"></table><br>
+ <script>
+layui.use('table', function(){
+  var table = layui.table;
+  table.render({
+    elem: '#test'
+    ,url:'/demo/table/user/'
+    ,width: 1200
+    ,height: 332
+    ,cols: [[
+      {type:'checkbox', fixed: 'left'}
+      ,{field:'id', width:120, title: 'ID', sort: true, fixed: 'left'}
+      ,{field:'username', width:120, title: '均值'}
+      ,{field:'sex', width:120, title: '方差',}
+      ,{field:'city', width:120, title: '峭度'}
+      ,{field:'sign', width: 120, title: '峰度'}
+     /*  ,{field:'experience', width:120, title: 'imf5'}
+      ,{field:'score', width:120, title: 'imf6'} */
+     /*  ,{field:'classify', width:80, title: '职业'}
+      ,{field:'wealth', width:120, title: '财富', sort: true, fixed: 'right'} */
+    ]]
+    ,page: true
+  });
+});
+</script>   
+
+  <button type="button" style="background-color:rgb(0,150,136);margin:10px 10px 40px 40px" class="layui-btn layui-btn-normal" onclick="window.location.href='timeDecomposeResult1';">确定</button>
+  <!-- <button type="button" style="background-color:rgb(0,150,136);margin:10px 10px 40px 40px" class="layui-btn layui-btn-normal" onclick="window.location.href='timeDomain';">返回</button> -->
+
+</body>
+</html>

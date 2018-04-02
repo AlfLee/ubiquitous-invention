@@ -1,0 +1,84 @@
+10
+
+dir
+0
+http://svn1.okbase.net:8080/svn/2017/MyProject/MyProject-Z/bin/src/main/resources/static/src/css/themes
+http://svn1.okbase.net:8080/svn/2017
+add
+
+
+
+
+
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+54a22bfd-1947-7545-9ce0-181366c91d1b
+
+blue.1.css
+file
+
+
+
+add
+
+blue.css
+file
+
+
+
+add
+
+default.css
+file
+
+
+
+add
+
+green.css
+file
+
+
+
+add
+
+light.css
+file
+
+
+
+add
+
+orange.css
+file
+
+
+
+add
+
+pink.css
+file
+
+
+
+add
+
+red.css
+file
+
+
+
+add
+

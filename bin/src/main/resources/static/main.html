@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./plugins/layui/css/layui.css" media="all">
+    <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/font-awesome/4.6.0/css/font-awesome.min.css">
+    <style>
+        .info-box {
+            height: 85px;
+            background-color: white;
+            background-color: #ecf0f5;
+        }
+        
+        .info-box .info-box-icon {
+            border-top-left-radius: 2px;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 2px;
+            display: block;
+            float: left;
+            height: 85px;
+            width: 85px;
+            text-align: center;
+            font-size: 45px;
+            line-height: 85px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .info-box .info-box-content {
+            padding: 5px 10px;
+            margin-left: 85px;
+        }
+        
+        .info-box .info-box-content .info-box-text {
+            display: block;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-transform: uppercase;
+        }
+        
+        .info-box .info-box-content .info-box-number {
+            display: block;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .major {
+            font-weight: 10px;
+            color: #01AAED;
+        }
+        
+        .main {
+            margin-top: 25px;
+        }
+        
+        .main .layui-row {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layui-fluid main">
+        <div class="layui-row">
+            <div class="layui-col-md12">
+                <ul class="layui-timeline">
+                    <li class="layui-timeline-item">
+                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                        <div class="layui-timeline-content layui-text">
+                            <h3 class="layui-timeline-title">项目内容</h3>
+                            <ul>
+                                <li>数据管理主要用于对建模分析数据的配置，其主要实现了数据导入，以及“数据量化处理”、“数据离散化”“数据归一化处理”等操作。
+                                </li>
+                                <li>特征分解是对数据进行特征提取与分解。表征振动信号性能退化指标的特征域有时域、频域和时频域三种。
+                                                                       其中，时域特征有平均值，均方根，RMS，峰度指数等。频域特征采用EMD、SVD和小波分解等方法进行处理。
+                                                                       时频域采用快速傅里叶变换（FFT）分解。</li>
+                                <li>特征选择是对特征进行降维。特征选择工作中，主要是要选择出适合模型训练的特征集合。
+                                                                        特征选择的方法多种多样，主要采用PCA、ICA、多目标筛选三种方式来完成特征降维。</li>
+                                <li>模型训练主要是训练模型，分为分类、回归和随机过程。
+                                                                        分类算法包括BP神经网络、SVM、Kmeans，回归算法包括Logistics回归、KNN、Softmax回归等。
+                                                                        随机过程包括Markov过程、Delta冲击模型和分段函数模型。针对训练出的各类模型进行最佳模型的选择。</li>
+                                 <li>故障诊断主要是利用上述分类算法以及训练出的模型对软硬件系统进行故障诊断的分类。</li>
+                                 <li>剩余寿命预测是利用上述回归算法和随机过程以及训练出的模型对所给系统预测出当前系统剩余的有效使用寿命。</li>
+                            </ul>
+                        </div>
+                    </li>
+                   
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script src="./plugins/layui/layui.js"></script>
+    <script>
+        layui.use('jquery', function() {
+            var $ = layui.jquery;
+            $('#test').on('click', function() {
+                parent.message.show({
+                    skin: 'cyan'
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

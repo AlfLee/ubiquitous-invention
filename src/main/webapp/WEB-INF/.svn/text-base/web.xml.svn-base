@@ -1,0 +1,59 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Archetype Created Web Application</display-name>
+  <servlet>
+  	<servlet-name>ListDown</servlet-name>
+  	<display-name>ListDown</display-name>
+  	<description></description>
+  	<servlet-class>com.telecom.controller.ListDown</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>MyServlet</servlet-name>
+  	<display-name>MyServlet</display-name>
+  	<description></description>
+  	<servlet-class>com.telecom.controller.MyServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>LoginServlet</servlet-name>
+  	<display-name>LoginServlet</display-name>
+  	<description></description>
+  	<servlet-class>com.telecom.controller.LoginServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>PrintHTMLServlet</servlet-name>
+  	<display-name>PrintHTMLServlet</display-name>
+  	<description></description>
+  	<servlet-class>com.telecom.controller.PrintHTMLServlet</servlet-class>
+  </servlet>
+ <!--  <error-page>
+      <error-code>404</error-code>
+      <location>/error404.jsp</location>
+  </error-page>
+      <error-page>
+       <error-code>500</error-code>
+      <location>/error500.jsp</location>
+  </error-page> -->
+  <servlet-mapping>
+      <servlet-name>UploadController</servlet-name>
+      <url-pattern>/UploadController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>ListDown</servlet-name>
+  	<url-pattern>/ListDown</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>MyServlet</servlet-name>
+  	<url-pattern>/MyServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>LoginServlet</servlet-name>
+  	<url-pattern>/LoginServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>PrintHTMLServlet</servlet-name>
+  	<url-pattern>/PrintHTMLServlet</url-pattern>
+  </servlet-mapping>
+</web-app>

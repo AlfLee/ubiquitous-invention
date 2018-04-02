@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/2017/!svn/ver/18081/MyProject/MyProject-Z/src/main/java/com/telecom/utils
+END
+Constants.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/2017/!svn/ver/18081/MyProject/MyProject-Z/src/main/java/com/telecom/utils/Constants.java
+END
+QDate.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/2017/!svn/ver/16989/MyProject/MyProject-Z/src/main/java/com/telecom/utils/QDate.java
+END
+QResponseVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/2017/!svn/ver/16989/MyProject/MyProject-Z/src/main/java/com/telecom/utils/QResponseVo.java
+END
+JsonTree.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/2017/!svn/ver/16989/MyProject/MyProject-Z/src/main/java/com/telecom/utils/JsonTree.java
+END
+ConnectDatabase.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/2017/!svn/ver/18081/MyProject/MyProject-Z/src/main/java/com/telecom/utils/ConnectDatabase.java
+END
+UploadFileUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/2017/!svn/ver/16989/MyProject/MyProject-Z/src/main/java/com/telecom/utils/UploadFileUtils.java
+END
+QString.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/2017/!svn/ver/16989/MyProject/MyProject-Z/src/main/java/com/telecom/utils/QString.java
+END

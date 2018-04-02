@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: MyProject-A
+Implementation-Version: 20180202-SNAPSHOT
+Built-By: LIFUHENG
+Implementation-Vendor-Id: com.telecom
+Build-Jdk: 1.8.0_91
+Implementation-URL: http://projects.spring.io/spring-boot/MyProject-A/
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+

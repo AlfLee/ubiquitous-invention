@@ -1,0 +1,106 @@
+package com.telecom.entity;
+
+public class SvmModel_entity extends BaseModel{
+
+	private String id;
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	//svm类型
+    private String svm_type;
+    //核函数类型
+    private String kernel_type;
+    //缓存大小
+    private String cache_size;
+    //终止条件
+    private String eps;
+    //惩罚系数
+    private String c;
+    
+    private String algorithm_name;
+    
+    private String equip_name;
+    
+    private String time;
+    
+    private String accuracy;
+
+	public String getSvm_type() {
+		return svm_type;
+	}
+
+	public void setSvm_type(String svm_type) {
+		this.svm_type = svm_type;
+	}
+
+	public String getKernel_type() {
+		return kernel_type;
+	}
+
+	public void setKernel_type(String kernel_type) {
+		this.kernel_type = kernel_type;
+	}
+
+	public String getCache_size() {
+		return cache_size;
+	}
+
+	public void setCache_size(String cache_size) {
+		this.cache_size = cache_size;
+	}
+
+	public String getEps() {
+		return eps;
+	}
+
+	public void setEps(String eps) {
+		this.eps = eps;
+	}
+
+	public String getC() {
+		return c;
+	}
+
+	public void setC(String c) {
+		this.c = c;
+	}
+
+	public String getAlgorithm_name() {
+		return algorithm_name;
+	}
+
+	public void setAlgorithm_name(String algorithm_name) {
+		this.algorithm_name = algorithm_name;
+	}
+
+	public String getEquip_name() {
+		return equip_name;
+	}
+
+	public void setEquip_name(String equip_name) {
+		this.equip_name = equip_name;
+	}
+
+	public String getTime() {
+		return time;
+	}
+
+	public void setTime(String time) {
+		this.time = time;
+	}
+
+	public String getAccuracy() {
+		return accuracy;
+	}
+
+	public void setAccuracy(String accuracy) {
+		this.accuracy = accuracy;
+	}
+
+
+}

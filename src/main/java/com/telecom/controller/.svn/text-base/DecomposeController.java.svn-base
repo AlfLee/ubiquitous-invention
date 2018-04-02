@@ -1,0 +1,98 @@
+package com.telecom.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+
+@Controller
+public class DecomposeController {
+
+	 @RequestMapping("timeDomain")
+		public String timeDomain() {
+			return "timeDomain";  
+		}
+		@RequestMapping("timeD")
+		public String timeD() {
+			return "timeD";  
+		}
+		@RequestMapping("frequencyDomain")
+		public String frequencyDomain() {
+			return "frequencyDomain";  
+		}
+		@RequestMapping("timeFrequency")
+		public String timeFrequency() {
+			return "timeFrequency";  
+		}
+		@RequestMapping("timeDecomposeResult")
+		public String timeDecomposeResult() {
+			return "timeDecomposeResult";  
+		}
+		@RequestMapping("timeDecomposeResult1")
+		public String timeDecomposeResult1() {
+			return "timeDecomposeResult1";  
+		}
+		@RequestMapping("SSA")
+		public String SSA() {
+			return "SSA";  
+		}
+		@RequestMapping("wave")
+		public String wave() {
+			return "wave";  
+		}
+		@RequestMapping("EMD")
+		public String EMD() {
+			return "EMD";  
+		}
+		@RequestMapping("FFT")
+		public String FFT() {
+			return "FFT";  
+		}
+		@RequestMapping("SSA1")
+		public String SSA1() {
+			return "SSA1";  
+		}
+		@RequestMapping("wave1")
+		public String wave1() {
+			return "wave1";  
+		}
+		@RequestMapping("FFT1")
+		public String FFT1() {
+			return "FFT1";  
+		}
+		@RequestMapping("EMD1")
+		public String EMD1() {
+			return "EMD1";  
+		}
+		@RequestMapping("SSAResult")
+		public String SSAResult() {
+			return "SSAResult";  
+		}
+		@RequestMapping("waveResult")
+		public String waveResult() {
+			return "waveResult";  
+		}
+		@RequestMapping("EMDResult")
+		public String EMDResult() {
+			return "EMDResult";  
+		}
+		@RequestMapping("FFTResult")
+		public String FFTResult() {
+			return "FFTResult";  
+		}
+		@RequestMapping("SSAResult1")
+		public String SSAResult1() {
+			return "SSAResult1";  
+		}
+		@RequestMapping("waveResult1")
+		public String waveResult1() {
+			return "waveResult1";  
+		}
+		@RequestMapping("EMDResult1")
+		public String EMDResult1() {
+			return "EMDResult1";  
+		}
+		@RequestMapping("FFTResult1")
+		public String FFTResult1() {
+			return "FFTResult1";  
+		}
+    }
