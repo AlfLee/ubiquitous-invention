@@ -1,5 +1,7 @@
 
 package svm;
+
+
 public class svm_model
 {
 	svm_parameter param;	// parameter
@@ -14,4 +16,9 @@ public class svm_model
 	int[] label;		// label of each class (label[n])
 	int[] nSV;		// number of SVs for each class (nSV[n])
 				// nSV[0] + nSV[1] + ... + nSV[n-1] = l
+	public svm_parameter getParam() {
+		return param;
+	}
+	
+	
 };

@@ -5,6 +5,9 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 
 public class Hello {
 
@@ -14,7 +17,7 @@ public class Hello {
     	  List<Double> label = new ArrayList<Double>();
     	  List<svm_node[]> nodeSet = new ArrayList<svm_node[]>();
     	 // getData(nodeSet, label, "E:\\project1\\file\\train.txt");
-    	  getData(nodeSet, label, "E:\\eclipse-workspace\\project1\\project1\\file\\train.txt");
+    	  getData(nodeSet, label, "E:\\eclipse-workspace\\project1\\file\\train.txt");
     	 // getData(nodeSet, label,  "E:\\eclipse-workspace\\EnterpriseRating\\file\\train1.txt");
     	  int dataRange=nodeSet.get(0).length;
     	  svm_node[][] datas = new svm_node[nodeSet.size()][dataRange]; // ѵ������������
@@ -28,7 +31,6 @@ public class Hello {
     	  for (int i = 0; i < lables.length; i++) {
     	   lables[i] = label.get(i);
     	  }
-    	 
     	// ����svm_problem����
     	  svm_problem problem = new svm_problem();
     	  problem.l = nodeSet.size(); // ��������
@@ -37,8 +39,8 @@ public class Hello {
     	 
     	// ����svm_parameter����
     	  svm_parameter param = new svm_parameter();
-    	  param.svm_type = svm_parameter.EPSILON_SVR;
-    	  param.kernel_type = svm_parameter.LINEAR;
+    	  param.svm_type = svm_parameter.ONE_CLASS;
+    	  param.kernel_type = svm_parameter.RBF;
     	  param.cache_size = 100;
     	  param.eps = 0.00001;
     	  param.C = 1.9;
@@ -47,12 +49,15 @@ public class Hello {
     	// �������û�����⣬��svm.svm_check_parameter()��������null,���򷵻�error������
     	  svm_model model = svm.svm_train(problem, param);
     	  // svm.svm_train()ѵ����SVM����ģ��
-    	 
+    	  GsonBuilder gsonBuilder = new GsonBuilder();
+    	  gsonBuilder.serializeSpecialFloatingPointValues();
+    	  Gson gson = gsonBuilder.create();
+    	 String json = gson.toJson(model);
     	  // ��ȡ��������
     	  List<Double> testlabel = new ArrayList<Double>();
     	  List<svm_node[]> testnodeSet = new ArrayList<svm_node[]>();
     	//  getData(testnodeSet, testlabel, "E:\\project1\\file\\test.txt");
-    	  getData(nodeSet, label, "E:\\eclipse-workspace\\project1\\project1\\file\\test.txt");
+    	  getData(testnodeSet, testlabel, "E:\\eclipse-workspace\\project1\\file\\test.txt");
     	// getData(testnodeSet, testlabel, "E:\\eclipse-workspace\\EnterpriseRating\\file\\test1.txt");
     	  
     	  svm_node[][] testdatas = new svm_node[testnodeSet.size()][dataRange]; // ѵ������������
@@ -80,7 +85,7 @@ public class Hello {
     	   if(Math.round(predictValue) != truevalue){
     		   count++; 		   
     	   }
-    	 //  err += Math.abs(predictValue - truevalue);
+    	   err += Math.abs(predictValue - truevalue);
     	   err=count/testdatas.length;
     	  }
     	  //System.out.println("err=" + err / datas.length);

@@ -83,7 +83,7 @@ ul li{width:10%;float:left;height:25px;}
       <div class="layui-inline">
     <label class="layui-form-label">终止条件：</label>
     <div class="layui-input-inline">
-      <select name="Final" id="EPS" onchange="editable(this)">
+      <select name="Final" id="EPS" lay-filter="editable(this)">
       
       <option value="0.0001">0.0001</option>
         <option value="0.001">0.001</option>
@@ -113,6 +113,8 @@ ul li{width:10%;float:left;height:25px;}
 </fieldset>
 <div class="layui-btn-group" style="text-align: right;">
     <button class="layui-btn" onclick="del();">删除</button>
+     <button class="layui-btn" onclick="selfadapt();" id = "adapt">自适应参数</button>
+    
   </div>
 <table class="layui-table">
 	<thead class="tr_1">
@@ -281,8 +283,6 @@ ul li{width:10%;float:left;height:25px;}
 $(function(){
 	var jsonData = {id:1};
 	clickNode(jsonData);
-	
-	console.log("asdf1234");
 });
 
 
@@ -295,11 +295,22 @@ function checkCheckBox(dom) {
     	$(dom).find("input:checkbox").prop("checked",true);
     }
 }
-var form;
+//var form;
 //必须有 否则CheckBox跟select框无样式
 layui.use('form', function(){
-	   form = layui.form;
-	  
+	 var  form = layui.form;
+	   form.on('select(editable(select1))', function(data)
+			   {
+		   console.log("run");
+			      if(select1.value == "")
+			      {  
+			         var newvalue = prompt("请输入","");  
+			         if(newvalue)
+			         {  
+			            addSelected(select1,newvalue,newvalue);  
+			         }  
+			      } 
+			   });
 });
 
 var page1=1;
@@ -495,7 +506,6 @@ function clickNode(node){
 
 function getdataselect(node){
 	var parentId=node.id;
-	console.log("asdf" + parentId);
 	var formData = new FormData();
 	formData.append("equipId",parentId);
 
@@ -514,11 +524,15 @@ function getdataselect(node){
               $("#dataSelect").empty();
 	           for(var i = 0;i<data.length;i++)
 	           {
-	        	   var option=document.createElement("option");
-	        	   option.setAttribute("value",data[i].id);
-	        	   option.innerText=data[i].dataName;
-	        	   root.appendChild(option);
-				  form.render('select'); 
+
+		        	   var option=document.createElement("option");
+		        	   option.setAttribute("value",data[i].id);
+		        	   option.innerText=data[i].dataName;
+		        	   root.appendChild(option);
+		        	   layui.use('form', function(){
+			        	    var  form = layui.form;
+					        form.render('select'); 
+	        	        });
 	           }
 		    },
 		  error: function(){
@@ -527,7 +541,8 @@ function getdataselect(node){
         }  
 		});
 }
-function editable(select1){
+
+/*function editable(select1){
 	alert("asdf"); 
    console.log("asdf" + select1);
    if(select1.value == ""){  
@@ -536,7 +551,7 @@ function editable(select1){
          addSelected(select1,newvalue,newvalue);  
       }  
    }  
-} 
+} */
 function addSelected(fld1,value1,text1){  
     if (document.all)    {  
             var Opt = fld1.document.createElement("OPTION");  
@@ -621,6 +636,49 @@ function del(){
 	           }  
 			});
 	}	
+}
+
+function selfadapt(){
+	var formData = new FormData();
+	formData.append("dataSelect",dataSelect);
+	formData.append("equipId",parentId);
+	var index1;
+	$.ajax({
+		  type: 'POST',
+		  url: 'selfadapt',
+		  data: formData,
+		  beforeSend:function(){
+			  $("#adapt").html("训练中");
+			  layui.use('layer', function(){ //独立版的layer无需执行这一句
+				  var layer = layui.layer;
+				  index1 = layer.load(0, {
+					  shade: [0.5,'#fff'] //0.1透明度的白色背景
+					});
+			  });
+		  },
+		  processData : false, 
+		  contentType : false,
+		  success: function (result){
+			  datas=result.code;
+			  var jsonData = {id:parentId};
+			  clickNode(jsonData);
+			  
+			  layer.msg('加载成功！', {icon: 1,time: 1000,
+					end:function(){
+						layer.close(index1); 
+						$("#adapt").html("自适应");
+					}
+				});
+			  
+		  }
+		  ,error: function(){
+            //请求出错处理
+			  layer.msg('出错了', {icon: 2,time: 1000});
+			  layer.close(index1);
+        }  
+		});
+	
+	
 }
 </script>       
 </body>

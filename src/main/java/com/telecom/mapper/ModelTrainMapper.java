@@ -19,9 +19,9 @@ public interface ModelTrainMapper {
 	
 	@SelectKey(keyProperty = "ModelId", resultType = String.class, before = true,keyColumn="ModelId",   
 		    statement = "select replace(uuid(), '-', '') as ModelId from dual")//用于自动生成id
-    @Insert("INSERT INTO model(ModelId,EquipmentId,ModelType,Modelparam)"
-    		+ " VALUES(#{ModelId},#{equipid}, #{modeltype}, #{svmmodelparam})")
-    void insertmodelparam(@Param("equipid") String equipid, @Param("modeltype") String modeltype,@Param("svmmodelparam") String svmmodelparam);
+    @Insert("INSERT INTO model(ModelId,EquipmentId,ModelType,Modelparam,Model)"
+    		+ " VALUES(#{ModelId},#{equipid}, #{modeltype}, #{svmmodelparam}, #{model})")
+    void insertmodelparam(@Param("equipid") String equipid, @Param("modeltype") String modeltype,@Param("svmmodelparam") String svmmodelparam,@Param("model") String model);
 	
 	@Select("<script>"
             + "select ModelId,EquipmentId,ModelType,Modelparam "
@@ -76,5 +76,7 @@ public interface ModelTrainMapper {
 	@Delete("delete from model where ModelId=#{id}")
 	void deletemodel(String id);
 	
+	@Select("select row_datas from data_rows_detail where data_id=#{dataid}")
+	List<String> getsqldata(@Param("dataid") String dataid);
 	
 }

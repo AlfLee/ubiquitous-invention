@@ -4,20 +4,29 @@ import com.gitee.sunchenbin.mybatis.actable.annotation.Column;
 import com.gitee.sunchenbin.mybatis.actable.annotation.Table;
 import com.gitee.sunchenbin.mybatis.actable.constants.MySqlTypeConstant;
 
-@Table(name="model")
+//@Table(name="model")
 public class GetModel extends BaseModel{
 	
-	@Column(name = "ModelId",type = MySqlTypeConstant.VARCHAR,length = 111)
+	//@Column(name = "ModelId",type = MySqlTypeConstant.VARCHAR,length = 111)
 	private String id;
 	
-	@Column(name = "EquipmentId",type = MySqlTypeConstant.VARCHAR,length = 111)
+	//@Column(name = "EquipmentId",type = MySqlTypeConstant.VARCHAR,length = 111)
 	private String equipid;
 	
-	@Column(name = "ModelType",type = MySqlTypeConstant.VARCHAR,length = 111)
+	public String getModel() {
+		return model;
+	}
+	public void setModel(String model) {
+		this.model = model;
+	}
+	//@Column(name = "ModelType",type = MySqlTypeConstant.VARCHAR,length = 111)
 	private String modeltype;
 	
-	@Column(name = "Modelparam",type = MySqlTypeConstant.VARCHAR,length = 111)
+	//@Column(name = "Modelparam",type = MySqlTypeConstant.VARCHAR,length = 111)
 	private String param;
+	
+	//@Column(name = "Model",type = MySqlTypeConstant.TEXT,length=1234564789)
+	private String model;
 	
 	public GetModel(){};
 	public GetModel(String id,String equipid,String modeltype,String param)
