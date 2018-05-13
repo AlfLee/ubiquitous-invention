@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Case;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -74,41 +75,54 @@ public class FaultController {
 		String result = "";
 		String data = "";
 		data = faultservice.GetModelid(equipId, modelparam);
+		String faultparam = "";
 		String temp[]=data.split(",");
-		result = faultservice.GetModel(temp[0]);
-		 String faultparam = "";
-		 faultparam = "svm类型:";
+		switch (modelparam) 
+		{
+		case "SVM":
+		    result = faultservice.GetModel(temp[0]);
+		    faultparam = "svm类型:";
 			GsonBuilder gsonBuilder = new GsonBuilder();
 			gsonBuilder.serializeSpecialFloatingPointValues();
 	   	    Gson gson = gsonBuilder.create();		    	
 	   	    svm_model model = gson.fromJson(result,svm_model.class);
-	   	  switch(model.getParam().svm_type)
-	   	  {
-	   	  case 4:
-	   		faultparam = faultparam + "EPSILON_SVR;";break;
-	   	  case 0:
-	   		faultparam = faultparam + "C_SVC;";break;
-	   	  case 1:
-	   		faultparam = faultparam + "NU_SVC;";break;
-	   	  case 2:
-	   		faultparam = faultparam + "ONE_CLASS;";break;
-	   	  case 3:
-	   		faultparam = faultparam + "NU_SVR;";break;
-	   	  }
-	   	faultparam = faultparam + "核函数类型:";
-	  	  switch(model.getParam().kernel_type)
-	  	  {
-	  	  case 0:
-	  		faultparam = faultparam + "LINEAR;";break;
-	  	  case 1 :
-	  		faultparam = faultparam + "POLY;"; break;
-	  	  case 2:
-	  		faultparam = faultparam + "RBF;";break;
-	  	  case 3:
-	  		faultparam = faultparam + "SIGMOID;";break;
-	  	  }
-	  	faultparam = faultparam + "缓存大小:"+model.getParam().cache_size+";"+"终止条件:"+model.getParam().eps+";"
+	   	    switch(model.getParam().svm_type)
+	   	    {
+	        	case 4:
+	   		        faultparam = faultparam + "EPSILON_SVR;";break;
+	   	        case 0:
+	   		        faultparam = faultparam + "C_SVC;";break;
+	   	        case 1:
+	   		        faultparam = faultparam + "NU_SVC;";break;
+	   	        case 2:
+	   		        faultparam = faultparam + "ONE_CLASS;";break;
+	   	        case 3:
+	   		        faultparam = faultparam + "NU_SVR;";break;
+	   	    }
+	   	    faultparam = faultparam + "核函数类型:";
+	  	    switch(model.getParam().kernel_type)
+	  	    {
+	  	        case 0:
+	  		        faultparam = faultparam + "LINEAR;";break;
+	  	        case 1 :
+	  		        faultparam = faultparam + "POLY;"; break;
+	  	         case 2:
+	  		        faultparam = faultparam + "RBF;";break;
+	  	         case 3:
+	  		        faultparam = faultparam + "SIGMOID;";break;
+	  	    }
+	  	    faultparam = faultparam + "缓存大小:"+model.getParam().cache_size+";"+"终止条件:"+model.getParam().eps+";"
 	  			+"惩罚系数:"+model.getParam().C+";"+"精度:"+temp[1];
+	  	    break;
+		case "Softmax":
+			result = faultservice.GetModelParam(data);
+			faultparam = faultparam + result;
+			break;
+		case "Bayes":
+			result = faultservice.GetModelParam(data);
+			faultparam = faultparam + result;
+			break;
+		}
 		return faultparam;
 	}
 	
@@ -130,8 +144,7 @@ public class FaultController {
 	public String ShowAlgDetail(@RequestParam(required=true,value="PARAM") String PARAM,@RequestParam(required=true,value="algtype") String algtype, ModelMap model) {
 		model.addAttribute("PARAM", PARAM);
 		model.addAttribute("algtype",algtype);
-		System.out.println(PARAM+"1111111111111111111111111111111");
-		System.out.println(algtype+"1111111111111111111111111111111");
+
 		return "algDetail";  
 	}
 

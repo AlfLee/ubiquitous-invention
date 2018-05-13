@@ -75,6 +75,8 @@ public interface FaultMapper {
 	@Select("select Model from model where ModelId=#{modelid}")
 	String modelfault(@Param("modelid") String modelid);
 	
+	@Select("select Modelparam from model where ModelId=#{modelid}")
+	String getmodelparam(@Param("modelid") String modelid);
 	@SelectKey(keyProperty = "FaultId", resultType = String.class, before = true,keyColumn="FaultId",   
 		    statement = "select replace(uuid(), '-', '') as FaultId from dual")//用于自动生成id
     @Insert("INSERT INTO fault(FaultId,IsFault,EquipName,ModelParam,Time,AlgType,EquipId,FaultData)"

@@ -2,6 +2,8 @@ package com.telecom.controller;
 
 
 
+import static org.mockito.Matchers.intThat;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 import java.io.BufferedReader;
@@ -63,9 +65,9 @@ public class ModelController {
 
 				List<GetModel> svmdatas = new ArrayList<>();
 
-				svmdatas = modeltrainservise.Showsvmmodel(equipId, (current-1)*limit, limit);
+				svmdatas = modeltrainservise.Showmodel(equipId, (current-1)*limit, limit,"svm");
 				System.out.println(svmdatas);
-				int count = modeltrainservise.svmmodelcount(equipId);
+				int count = modeltrainservise.modelcount(equipId,"svm");
 				System.out.println(count+"");
 				datass = modeltrainservise.adapt(svmdatas);
 				result.setData(datass);
@@ -93,41 +95,84 @@ public class ModelController {
 				return result;
 				}
 			
-			 public static void getData(List<svm_node[]> nodeSet, List<Double> label, String filename) {
-				 try { 
-			    	   FileReader fr = new FileReader(new File(filename));
-			    	   BufferedReader br = new BufferedReader(fr);
-			    	   String line = null;
-			    	   while ((line = br.readLine()) != null) {
-			    		   String[] datas = line.split(",");
-			    		   svm_node[] vector = new svm_node[datas.length - 1];
-			    		   for (int i = 0; i < datas.length - 1; i++) {
-			    			   svm_node node = new svm_node();
-			    			   node.index = i + 1;
-			    	     node.value = Double.parseDouble(datas[i]);
-			    	     vector[i] = node;
-			    	     }
-			    		   nodeSet.add(vector);
-			    		   double lablevalue = Double.parseDouble(datas[datas.length - 1]);
-			    		   label.add(lablevalue);
-			    		   }
-			    	   } catch (Exception e) {
-			    		   e.printStackTrace();
-			    		   }
+			@RequestMapping("/Softmax")
+			@ResponseBody
+			public QResponseVo<List<String>> Softmax(@RequestParam(value="DataSelectSoftMax",defaultValue="1") String DataSelectSoftMax,
+				@RequestParam(value="Iteration",defaultValue="400") int Iteration,
+				@RequestParam(value="LearnRate",defaultValue="0.25") double LearnRate,
+				@RequestParam(value="equipid",defaultValue="1") String equipid) {
+				QResponseVo<List<String>> result = new QResponseVo<List<String>>();
+				List<String> temp = new ArrayList<>();
+				DataSelectSoftMax = "E:\\eclipse-workspace\\project1\\file\\train.txt";
+				temp = modeltrainservise.Softmax(DataSelectSoftMax, Iteration, LearnRate, equipid);
+				modeltrainservise.insert(equipid,"softmax",temp.get(1),temp.get(0));
+				result.setCode(CODE.Success);
+				return result;
+				}
+			
+			
+			@RequestMapping("/showsoftmaxmodel")
+			@ResponseBody
+			public QResponseVo<List<GetModel>> showsoftmaxmodel(@RequestParam(value="current") int current,
+					@RequestParam(value="limit") int limit,
+					@RequestParam(value="equipId") String equipId){
+				QResponseVo<List<GetModel>> result = new QResponseVo<List<GetModel>>();
+				//List<SvmModel_entity> datass = new ArrayList<>(); 
 
-				 }
-			 
-
-	
-		    
-		    
-			@RequestMapping("/SoftMax")
-			public void SoftMax()
-			{
-				System.out.println("run softmax");
-				//return "modelTrain";
+				List<GetModel> softmaxdatas = new ArrayList<>();
+				softmaxdatas = modeltrainservise.Showmodel(equipId, (current-1)*limit, limit,"softmax");
+				//System.out.println(svmdatas);
+				int count = modeltrainservise.modelcount(equipId,"softmax");
+				System.out.println(count+"");
+				for(int i = 0 ; i < softmaxdatas.size();i++)
+				{
+					String softmaxparam = softmaxdatas.get(i).getParam();
+					String equipname = modeltrainservise.GetEquipName(softmaxdatas.get(i).getEquipid());
+					softmaxparam = softmaxparam + "," + equipname;
+					softmaxdatas.get(i).setParam(softmaxparam);
+				}
+				result.setData(softmaxdatas);
+				result.setCount(count);
+				return result;
 			}
 			
+			@RequestMapping("/Bayes")
+			@ResponseBody
+			public QResponseVo<List<String>> Bayes(@RequestParam(value="DataSelectBayes",defaultValue="1") String DataSelectBayes,
+				@RequestParam(value="equipid",defaultValue="1") String equipid) {
+				QResponseVo<List<String>> result = new QResponseVo<List<String>>();
+				List<String> temp = new ArrayList<>();
+				DataSelectBayes = "E:\\大学\\毕业设计\\材料\\NaiveBayes\\NaiveBayes\\train.txt";
+				temp = modeltrainservise.Bayes(DataSelectBayes, equipid);
+				modeltrainservise.insert(equipid,"bayes",temp.get(1),temp.get(0));
+				result.setCode(CODE.Success);
+				return result;
+				}
+			
+			@RequestMapping("/showbayesmodel")
+			@ResponseBody
+			public QResponseVo<List<GetModel>> showbayesmodel(@RequestParam(value="current") int current,
+					@RequestParam(value="limit") int limit,
+					@RequestParam(value="equipId") String equipId){
+				QResponseVo<List<GetModel>> result = new QResponseVo<List<GetModel>>();
+				//List<SvmModel_entity> datass = new ArrayList<>(); 
+
+				List<GetModel> bayesdatas = new ArrayList<>();
+				bayesdatas = modeltrainservise.Showmodel(equipId, (current-1)*limit, limit,"bayes");
+				//System.out.println(svmdatas);
+				int count = modeltrainservise.modelcount(equipId,"bayes");
+				System.out.println(count+"");
+				for(int i = 0 ; i < bayesdatas.size();i++)
+				{
+					String bayesparam = bayesdatas.get(i).getParam();
+					String equipname = modeltrainservise.GetEquipName(bayesdatas.get(i).getEquipid());
+					bayesparam = bayesparam + "," + equipname;
+					bayesdatas.get(i).setParam(bayesparam);
+				}
+				result.setData(bayesdatas);
+				result.setCount(count);
+				return result;
+			}
 			
 			@RequestMapping("/getdataselect")
 			@ResponseBody

@@ -1,5 +1,6 @@
 package com.telecom.service.impl;
 
+import static org.mockito.Matchers.intThat;
 import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 
 import java.io.BufferedReader;
@@ -19,7 +20,11 @@ import com.telecom.entity.DataInfo;
 import com.telecom.entity.GetModel;
 import com.telecom.entity.SvmModel_entity;
 import com.telecom.mapper.ModelTrainMapper;
+import com.telecom.naivebayes.Classifier;
+import com.telecom.naivebayes.DataSet;
+import com.telecom.naivebayes.Evaluation;
 import com.telecom.service.ModelTrainService;
+import com.telecom.softmax.softmaxRex;
 
 import svm.svm;
 import svm.svm_model;
@@ -35,7 +40,7 @@ public class ModelTrainServiceImpl implements ModelTrainService{
 	@Autowired
 	private ModelTrainMapper modeltrainmapper;
 	@Override
-	public List<GetModel> Showsvmmodel(String equipId, int current, int pagesize) {
+	public List<GetModel> Showmodel(String equipId, int current, int pagesize,String algtype) {
 		// TODO Auto-generated method stub
 		List<String> ids = new ArrayList<>();
 		List<String> ids1 = new ArrayList<>();
@@ -43,7 +48,7 @@ public class ModelTrainServiceImpl implements ModelTrainService{
 		List<String> ids2 = getAllChildren(ids1, ids);
 		ids2.addAll(ids1);
 		System.out.println(ids2);
-		return modeltrainmapper.getmodelInfo(ids2, current,pagesize);
+		return modeltrainmapper.getmodelInfo(ids2, current,pagesize,algtype);
 	}
 	
 	
@@ -63,14 +68,14 @@ public class ModelTrainServiceImpl implements ModelTrainService{
 		return newIds;
 	}*/
 	@Override
-	public int svmmodelcount(String equipId) {
+	public int modelcount(String equipId,String algtype) {
 		// TODO Auto-generated method stub
 		List<String> ids = new ArrayList<>();
 		List<String> ids1 = new ArrayList<>();
 		ids1.add(equipId);
 		List<String> ids2 = getAllChildren(ids1, ids);
 		ids2.addAll(ids1);
-		return modeltrainmapper.svmmodelcount(ids2);
+		return modeltrainmapper.modelcount(ids2,algtype);
 	}
 	
 	@Override
@@ -244,6 +249,94 @@ public class ModelTrainServiceImpl implements ModelTrainService{
 	
 	}
 	
+	public List<String> Softmax(String DataSelectSoftMax,int Iteration,double LearnRate,String equipid)
+	{
+		List<List<Double>> traindatas = new ArrayList<>();
+		List<String> result = new ArrayList<>();
+		List<Double> trainlabel = new ArrayList<>();
+		List<Double> labeltype = new ArrayList<>();
+		List<List<Double>> testdatas = new ArrayList<>();
+		List<Double> testlabel = new ArrayList<>();
+		getsqlDataSoftmax(traindatas, trainlabel, DataSelectSoftMax);
+		int n_in = traindatas.get(0).size();
+		int n_out=0;
+		for(int i = 0;i<trainlabel.size();i++)
+		{
+			if(!labeltype.contains(trainlabel.get(i)))
+			{
+				labeltype.add(trainlabel.get(i));
+			}
+		}
+		n_out = labeltype.size();
+		softmaxRex Classifier = new softmaxRex(n_out,n_in);
+		getsqlDataSoftmax(testdatas, testlabel, "E:\\eclipse-workspace\\project1\\file\\test.txt");
+		 long startTime=System.currentTimeMillis();
+	 	Classifier.Train(traindatas, trainlabel,traindatas.size(),Iteration, LearnRate, false);
+	 	
+	 	
+	 	double acc = Classifier.Analysis(testdatas,testlabel,testdatas.size(),false,"0");
+	   	long endTime=System.currentTimeMillis();
+	    float excTime=(float)(endTime-startTime)/1000;
+	 	GsonBuilder gsonBuilder = new GsonBuilder();
+	   	gsonBuilder.serializeSpecialFloatingPointValues();
+	   	Gson gson = gsonBuilder.create();		    	
+	   	String json = gson.toJson(Classifier.getTheta());
+	   	result.add(json);
+	   	String softmaxparam = Iteration +"," + LearnRate + "," + acc + "," + Float.toString(excTime);
+	   	result.add(softmaxparam);
+		return result;
+	}
+	
+	
+	public List<String> Bayes(String DataSelectBayes,String equipid)
+	{
+		//String[] dataPaths = new String[]{"E:\\大学\\毕业设计\\材料\\NaiveBayes\\NaiveBayes\\breast-cancer.data"};
+        //String path = dataPaths[0];
+            DataSet dataset = new DataSet(DataSelectBayes);
+            boolean[] isCategory = dataset.getIsCategory();
+            double[][] features = dataset.getFeatures();
+            double[] labels = dataset.getLabels();
+            List<String> result = new ArrayList<>();
+            boolean isClassification = isCategory[isCategory.length - 1];
+            Classifier c;
+            long startTime=System.currentTimeMillis();
+			try {
+				c = (Classifier) Class.forName("com.telecom.naivebayes." + "NaiveBayes").newInstance();
+				 
+				 String bayesmodel =  c.trainalldata(isCategory, features, labels);
+				 
+
+				
+				result.add(bayesmodel);
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+           
+//
+//            // conduct 10-cv 
+           Evaluation eva = new Evaluation(dataset, "NaiveBayes");
+          eva.crossValidation();
+		long endTime=System.currentTimeMillis();
+		float excTime=(float)(endTime-startTime)/1000;
+		String bayesparam = eva.getAccMean() +"," + eva.getAccStd() + "," + Float.toString(excTime);
+		result.add(bayesparam);
+		
+//
+//      // print mean and standard deviation of accuracy
+      System.out.println("Dataset:" + DataSelectBayes + ", mean and standard deviation of accuracy:" + eva.getAccMean() + "," + eva.getAccStd());
+      
+        
+        return result;
+	}
+	
+	
 	 public static void getData(List<svm_node[]> nodeSet, List<Double> label, String filename) {
 		 try { 
 	    	   FileReader fr = new FileReader(new File(filename));
@@ -290,6 +383,47 @@ public class ModelTrainServiceImpl implements ModelTrainService{
          }
     }
     
+    
+    public void getsqlDataSoftmax(List<List<Double>> datas, List<Double> label, String dataSelect)
+    {
+       /* List<String> data = new ArrayList<>();
+        data = getsqldata(dataSelect);
+        int ii;
+        for(ii = 0; ii < data.size(); ii++)
+        {
+         	String[] datass = data.get(ii).split(",,");
+        	List<Double> temp = new ArrayList<>();
+        	for (int i = 0; i < datass.length-1; i++)
+        	{
+        		temp.add(Double.parseDouble(datass[i]));
+        	}
+   		    datas.add(temp);
+   		   double lablevalue = Double.parseDouble(datass[datass.length - 1]);
+   		   label.add(lablevalue);
+        }*/
+    	
+		 try { 
+	    	   FileReader fr = new FileReader(new File(dataSelect));
+	    	   BufferedReader br = new BufferedReader(fr);
+	    	   String line = null;
+	    	   while ((line = br.readLine()) != null)
+	    	   {
+	    		   String[] datass = line.split(",");
+	    		   List<Double> temp = new ArrayList<>();
+		           	for (int i = 0; i < datass.length-1; i++)
+		           	{
+		           		temp.add(Double.parseDouble(datass[i]));
+		           	}
+	      		    datas.add(temp);
+	      		   double lablevalue = Double.parseDouble(datass[datass.length - 1]);
+	      		   label.add(lablevalue);
+	    	   }
+	    	 } catch (Exception e) {
+	    		   e.printStackTrace();
+	    		   }
+
+		 
+    }
     public List<SvmModel_entity> adapt(List<GetModel> svmdatas)
     {
 		int i;
@@ -343,8 +477,6 @@ public class ModelTrainServiceImpl implements ModelTrainService{
 				int min = 1;
 				int max= 1000;
 				result.C = min + random.nextInt(1000);
-				
-				System.out.println(result.C+"   0000000000000000000000000000000000");
 			}
 		case 1:
 		    {

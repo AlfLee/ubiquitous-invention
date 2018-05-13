@@ -11,6 +11,7 @@ public interface FaultService {
 	public int getfaultcount(String equipId);
 	public List<String> getsqldata(String dataid);
 	public String GetModel(String modelid);
+	public String GetModelParam(String modelid);
 	public void insertresult(String faultresult,String EquipName,String faultparam,String alg_type,String equipid,String time,String faultdata);
 	public void diagnose(String dataSelect,String alg_type,String equipid);
 	public String getsimpledata(String FaultDataId);

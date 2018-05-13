@@ -25,7 +25,7 @@ public interface ModelTrainMapper {
 	
 	@Select("<script>"
             + "select ModelId,EquipmentId,ModelType,Modelparam "
-			+ "from model where ModelType='svm' and EquipmentId in "
+			+ "from model where ModelType=#{algtype} and EquipmentId in "
            + "<foreach item='item' index='index' collection='equipIds' open='(' separator=',' close=')'>"
                 + "#{item}"
             + "</foreach>"
@@ -37,7 +37,7 @@ public interface ModelTrainMapper {
         @Result(property = "modeltype",  column = "ModelType"),
         @Result(property = "param",  column = "Modelparam"),
     })
-	List<GetModel> getmodelInfo(@Param("equipIds") List<String> equipIds,@Param("current") int current, @Param("pageSize") int pageSize);
+	List<GetModel> getmodelInfo(@Param("equipIds") List<String> equipIds,@Param("current") int current, @Param("pageSize") int pageSize,@Param("algtype") String algtype);
 	
 	@Select("<script>"
             + "select id from equipment where parent_id in "
@@ -49,12 +49,12 @@ public interface ModelTrainMapper {
 	
 	@Select("<script>"
             + "select count(*) "
-			+ "from model where ModelType='svm' and EquipmentId in "
+			+ "from model where ModelType=#{algtype} and EquipmentId in "
            + "<foreach item='item' index='index' collection='equipIds' open='(' separator=',' close=')'>"
                 + "#{item}"
             + "</foreach>"//${}传参不加引号 #{}要加
         + "</script>")
-	int svmmodelcount(@Param("equipIds") List<String> equipIds);
+	int modelcount(@Param("equipIds") List<String> equipIds,@Param("algtype") String algtype);
 	
 	
 	@Select("select name from equipment where id=#{equipIds}")

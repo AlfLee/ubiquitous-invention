@@ -44,16 +44,47 @@
 	   <label class="layui-form-label"><span style="color:red;" >*</span> 精度：</label>
 	     <label class="layui-form-label" style="text-align:left" id = "accuracy"/>
 	 </div>
+	
     </div>
-  </form>
+    
+	 <!-- Softmxa -->
+	<div id = "SoftMax" style="display:none">
+	 <div class="layui-form-item">
+	   <label class="layui-form-label"><span style="color:red;" >*</span> 迭代次数：</label>
+	   <label class="layui-form-label" style="text-align:left" id = "interation"/>
 
-  </div>
+	 </div>
+	 <div class="layui-form-item">
+	   <label class="layui-form-label" style="text-align:left;"><span style="color:red;" >*</span> 学习率：</label>
+	    <label class="layui-form-label" style="text-align:left" id = "learnrate"/>
+
+	 </div>
+
+	 <div class="layui-form-item">
+	   <label class="layui-form-label" style="text-align:left;"><span style="color:red;" >*</span> 精度：</label>
+	     <label class="layui-form-label" style="text-align:left" id = "softmaxaccuracy"/>
+	 </div>
+	</div>
+	
+		 <!-- Bayes -->
+	<div id = "Bayes" style="display:none">
+	 <div class="layui-form-item">
+	   <label class="layui-form-label"><span style="color:red;" >*标准偏差</span> ：</label>
+	   <label class="layui-form-label" style="text-align:left" id = "dev"/>
+	 </div>
+	 <div class="layui-form-item">
+	   <label class="layui-form-label" style="text-align:left;"><span style="color:red;" >*</span> 精度：</label>
+	     <label class="layui-form-label" style="text-align:left" id = "bayesaccuracy"/>
+	 </div>
+	</div>
+  </form>
+</div>
 <script type="text/javascript">
 var PARAM = "${PARAM}";
 var algtype = "${algtype}";
 
 $(function(){
-	console.log(PARAM);
+	console.log(PARAM+"inglfDetail");
 	console.log(algtype);
 	var root;
 	switch(algtype)
@@ -82,6 +113,31 @@ $(function(){
 		epshandle.innerText=realvalue[3];
 		Chandle.innerText=realvalue[4];
 		accuracyhandle.innerText=realvalue[5];
+		break;
+		
+	case "Softmax":
+		root = document.getElementById("SoftMax");
+		root.style.display="";
+		var interationhandle=document.getElementById("interation");
+		var learnratehandle=document.getElementById("learnrate");
+		var softmaxaccuracyhandle=document.getElementById("softmaxaccuracy");
+		var datass=new Array();
+		datass=PARAM.split(",");
+		console.log(datass[0]);
+		interationhandle.innerText = datass[0];
+		learnratehandle.innerText=datass[1];
+		softmaxaccuracyhandle.innerText=datass[2];
+		break;
+	case "Bayes":
+		root = document.getElementById("Bayes");
+		root.style.display="";
+		var devhandle=document.getElementById("dev");
+		var bayesaccuracyhandle=document.getElementById("bayesaccuracy");
+		var datass=new Array();
+		datass=PARAM.split(",");
+		console.log(datass[1]);
+		devhandle.innerText = datass[1];
+		bayesaccuracyhandle.innerText=datass[0];
 		break;
 	}
 });

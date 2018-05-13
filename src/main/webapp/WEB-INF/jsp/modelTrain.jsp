@@ -141,46 +141,48 @@ ul li{width:10%;float:left;height:25px;}
 <div style="text-align: left;">
 <form class="layui-form" action="">
 <div class="layui-form-item">
-<div class="layui-inline">
+  <div class="layui-inline">
     <label class="layui-form-label">数据选择：</label>
     <div class="layui-input-inline">
-      <select name="DataSelect" >
-        <option value="">请选择</option>
-        <option value="1">数据1</option>
-        <option value="2">数据2</option>
-        <option value="3">数据3</option>
+      <select id="DataSelectSoftMax">
       </select>
-      </div>
-      </div>
-   <div class="layui-inline">
-    <label class="layui-form-label">采样比例：</label>
-    <div class="layui-input-inline">
-      <select name="samplingRate" >
-        <option value="">0.1</option>
-        <option value="1">0.2</option>
-        <option value="2">0.4</option>
-        <option value="3">0.5</option>
-        <option value="4">1</option>
-      </select>
-      </div>
-      </div>
-	<div class="layui-inline">
-    <label class="layui-form-label">贡献度：</label>
-    <div class="layui-input-inline">
-      <select name="Contribution" >
-        <option value="">0.9</option>
-        <option value="1">0.85</option>
-        <option value="2">0.8</option>
-      </select>
-      </div>
-       <button class="layui-btn" style="float:right;"><i class="layui-icon" >选择</i></button>
-      </div>
+    </div>
+  </div>
+  <div class="layui-inline">
+    <label class="layui-form-label">迭代次数：</label>
+    <div class="layui-input-block">
+      <input class="layui-input" id="Iteration"/>
+    </div>
+  </div>
+  <div class="layui-inline">
+    <label class="layui-form-label">学习率：</label>
+    <div  class="layui-input-block">
+      <input class="layui-input" id="LearnRate"/>
+    </div>
+      
+  </div>
+   <input class="layui-btn" style="float:right;width:100px;" id="SoftMaxTrain" onclick="runSoftmax()" value="训练"/>
 </div>
 </form>
 </div>
 <fieldset class="layui-elem-field layui-field-title">
   <legend>选择结果</legend>
 </fieldset>
+
+<table class="layui-table">
+	<thead class="tr_2">
+    <tr>
+      <th style="width:20px;"><input type="checkbox" onclick="selectAll(this);" /></th>
+      <th>算法名称</th>
+      <th>设备名称</th>
+      <th>迭代次数</th>
+      <th>学习率</th>
+      <th>训练时间</th>
+      <th>训练精度</th>
+    </tr> 
+  </thead>
+</table>
+<div id="pagesoftmax" style="margin-top: -20px"></div>
 </div>
 <div class="dddd" id="INPUT_con3" style="display: none">
  <fieldset class="layui-elem-field layui-field-title">
@@ -191,37 +193,11 @@ ul li{width:10%;float:left;height:25px;}
 <div class="layui-form-item">
 <div class="layui-inline">
     <label class="layui-form-label">数据选择：</label>
-    <div class="layui-input-inline">
-      <select name="DataSelect" >
-        <option value="">请选择</option>
-        <option value="1">数据1</option>
-        <option value="2">数据2</option>
-        <option value="3">数据3</option>
-      </select>
+      <div class="layui-input-inline">
+       <select id="DataSelectBayes">
+       </select>
       </div>
-      </div>
-<div class="layui-inline">
-    <label class="layui-form-label">采样比例：</label>
-    <div class="layui-input-inline">
-      <select name="samplingRate" >
-        <option value="">0.1</option>
-        <option value="1">0.2</option>
-        <option value="2">0.4</option>
-        <option value="3">0.5</option>
-        <option value="4">1</option>
-      </select>
-      </div>
-      </div>
-	<div class="layui-inline">
-    <label class="layui-form-label">贡献度：</label>
-    <div class="layui-input-inline">
-      <select name="Contribution" >
-        <option value="">0.9</option>
-        <option value="1">0.85</option>
-        <option value="2">0.8</option>
-      </select>
-      </div>
-       <button class="layui-btn" style="float:right;"><i class="layui-icon" >选择</i></button>
+      <input class="layui-btn" style="float:right;width:100px;" id="BayesTrain" onclick="runBayes()" value="训练"/>
       </div>
 </div>
 </form>
@@ -229,6 +205,19 @@ ul li{width:10%;float:left;height:25px;}
 <fieldset class="layui-elem-field layui-field-title">
   <legend>选择结果</legend>
 </fieldset>
+<table class="layui-table">
+	<thead class="tr_3">
+    <tr>
+      <th style="width:20px;"><input type="checkbox" onclick="selectAll(this);" /></th>
+      <th>算法名称</th>
+      <th>设备名称</th>
+      <th>标准偏差</th>
+      <th>训练时间</th>
+      <th>训练精度</th>
+    </tr> 
+  </thead>
+</table>
+<div id="pagebayes" style="margin-top: -20px"></div>
 </div>
 <div class="dddd" id="INPUT_con4" style="display: none">
  <fieldset class="layui-elem-field layui-field-title">
@@ -321,16 +310,20 @@ function setTab(name, cursel, n) //tab页点击脚本
 		for(p=d.length;p--;){
 		if(d[p].id==cursel){
 			d[p].style.backgroundColor="#7FFFD4"; /* 点击 #7FFFD4 #20B2AA*/
-			page1 = cursel;
+			
 		}
 		else{
 			d[p].style.backgroundColor="#20B2AA" /*其他 #20B2AA*/
 			} 
 		}
+		page1 = cursel;
 		var menu = document.getElementById(name  + "_tab" + i); //提取tab页名
 		var con = document.getElementById(name  + "_con" + i); //提取内容名
 		menu.className = i == cursel ? "layui-this" : ""; //把当前点击的tab页class改为"hover",其他的消除
 		con.style.display = i == cursel ? "block" : "none"; //把当前点击的内容显示，其他的消除
+	    var jsonData = {id:parentId};
+		clickNode(jsonData);
+		//getdataselect(jsonData);
 		//alert(d+" "+menu +" "+ com);
 	}
 
@@ -397,10 +390,102 @@ function runSvm()
 	//alert(equipSelect);
 }
 
+function runSoftmax()
+{
+	var formData = new FormData();
+	var DataSelectSoftMax=document.getElementById("DataSelectSoftMax").value; 
+	var Iteration=document.getElementById("Iteration").value;
+	var LearnRate=document.getElementById("LearnRate").value;
+	formData.append("DataSelectSoftMax",DataSelectSoftMax);
+	formData.append("Iteration",Iteration);
+	formData.append("LearnRate",LearnRate);
+	formData.append("equipid",parentId);
+	var index1;
+	$.ajax({
+		  type: 'POST',
+		  url: 'Softmax',
+		  data: formData,
+		  beforeSend:function(){
+			  $("#DataSelectSoftMax").html("训练中");
+			  layui.use('layer', function(){ //独立版的layer无需执行这一句
+				  var layer = layui.layer;
+				  index1 = layer.load(0, {
+					  shade: [0.5,'#fff'] //0.1透明度的白色背景
+					});
+			  });
+		  },
+		  processData : false, 
+		  contentType : false,
+		  success: function (result){
+			  datas=result.code;
+			  console.log(page1+"in the softmax");
+			  var jsonData = {id:parentId};
+			  clickNode(jsonData);
+			  layer.msg('加载成功！', {icon: 1,time: 1000,
+					end:function(){
+						layer.close(index1); 
+						$("#DataSelectSoftMax").html("训练");
+					}
+				});
+			  
+		  }
+		  ,error: function(){
+            //请求出错处理
+			  layer.msg('出错了', {icon: 2,time: 1000});
+			  layer.close(index1);
+        }  
+		});
+}
+
+
+function runBayes()
+{
+	var formData = new FormData();
+	var DataSelectSoftMax=document.getElementById("DataSelectBayes").value; 
+	formData.append("DataSelectSoftMax",DataSelectSoftMax);
+	formData.append("equipid",parentId);
+	var index1;
+	$.ajax({
+		  type: 'POST',
+		  url: 'Bayes',
+		  data: formData,
+		  beforeSend:function(){
+			  $("#DataSelectBayes").html("训练中");
+			  layui.use('layer', function(){ //独立版的layer无需执行这一句
+				  var layer = layui.layer;
+				  index1 = layer.load(0, {
+					  shade: [0.5,'#fff'] //0.1透明度的白色背景
+					});
+			  });
+		  },
+		  processData : false, 
+		  contentType : false,
+		  success: function (result){
+			  datas=result.code;
+			  console.log(page1+"in the bayes");
+			  var jsonData = {id:parentId};
+			  clickNode(jsonData);
+			  layer.msg('加载成功！', {icon: 1,time: 1000,
+					end:function(){
+						layer.close(index1); 
+						$("#DataSelectBayes").html("训练");
+					}
+				});
+			  
+		  }
+		  ,error: function(){
+            //请求出错处理
+			  layer.msg('出错了', {icon: 2,time: 1000});
+			  layer.close(index1);
+        }  
+		});
+}
+
 var currentPage;
 var pageSize;
 var loadingFlag=0;
 var algortype;
+var tableelem;
 //点击节点触发
 function clickNode(node){
 	parentId = node.id;
@@ -410,12 +495,15 @@ function clickNode(node){
 	{
 	case 1:
 		algortype = "showsvmmodel";
+		tableelem = "page";
 		break;
 	case 2:
 		algortype = "showsoftmaxmodel";
+		tableelem = "pagesoftmax";
 		break;
 	case 3:
 		algortype = "showbayesmodel";
+		tableelem = "pagebayes";
 		break;
 	case 4:
 		algortype = "showdeeplearningmodel";
@@ -447,7 +535,7 @@ function clickNode(node){
 			  layui.use(['laypage', 'layer'], function(){
 				  var laypage = layui.laypage
 				  laypage.render({
-					    elem: 'page'
+					    elem: tableelem
 					    ,count: count
 					    ,curr:!node.current ? "1" : node.current
 					    ,layout: ['prev', 'page', 'next','count','limit']
@@ -490,7 +578,60 @@ function clickNode(node){
 						  var layer = layui.layer;
 						  layer.close(index1);
 					  });
+				  
 					  
+				  }
+				  break;
+			  case 2:
+				  {
+				  var jsonData = {id:parentId};
+				  getdataselect(jsonData);
+				  
+				  for(x in datas){
+					  //console.log(datas[x].param);
+					  var temp = new Array();
+			          temp=datas[x].param.split(",");
+					  var accuracy = "";
+					  $tr = "<tr name='datas' onmousemove='hover(this)' onmouseout='outHover(this)'><td style='width:20px;'><input type='checkbox' name='box' id='"+datas[x].id+"'/></td>"
+					  //$tr = "<tr name='datas'><td style='width:20px;'><input type='checkbox' name='box' id='"+datas[x].id+"'/></td>"
+					  $tr += "<td name='algorithm_name'>"+datas[x].modeltype+"</td>";
+					  $tr += "<td name='equip_name'>"+temp[4]+"</td>";
+					  $tr += "<td name='interation'>"+temp[0]+"</td>";
+					  $tr += "<td name='learnrate'>"+temp[1]+"</td>";
+					  $tr += "<td name='time'>"+temp[3]+"</td>";
+					  accuracy = temp[2];
+					  $tr += "<td>"+accuracy+"</td></tr>";
+					  $(".tr_2").after($tr);
+					  }
+					  layui.use('layer', function(){
+						  var layer = layui.layer;
+						  layer.close(index1);
+					  });
+				  }
+				  break;
+			  case 3:
+				  {
+					  var jsonData = {id:parentId};
+					  getdataselect(jsonData);
+					  for(x in datas){
+						  //console.log(datas[x].param);
+						  var temp = new Array();
+				          temp=datas[x].param.split(",");
+						  var accuracy = "";
+						  $tr = "<tr name='datas' onmousemove='hover(this)' onmouseout='outHover(this)'><td style='width:20px;'><input type='checkbox' name='box' id='"+datas[x].id+"'/></td>"
+						  //$tr = "<tr name='datas'><td style='width:20px;'><input type='checkbox' name='box' id='"+datas[x].id+"'/></td>"
+						  $tr += "<td name='algorithm_name'>"+datas[x].modeltype+"</td>";
+						  $tr += "<td name='equip_name'>"+temp[3]+"</td>";
+						  $tr += "<td name='dev'>"+temp[1]+"</td>";
+						  $tr += "<td name='time'>"+temp[2]+"</td>";
+						  accuracy = temp[0];
+						  $tr += "<td>"+accuracy+"</td></tr>";
+						  $(".tr_3").after($tr);
+						  }
+						  layui.use('layer', function(){
+							  var layer = layui.layer;
+							  layer.close(index1);
+						  });
 				  }
 				  break;
 			  }
@@ -516,12 +657,29 @@ function getdataselect(node){
 		  processData : false, 
 		  contentType : false,
 		  success: function(result) {
-			  console.log("asdf123");
 			  var data=result.data;
-
-              
-              var root = document.getElementById("dataSelect");
-              $("#dataSelect").empty();
+			  console.log(data);
+			  console.log(page1);
+              switch(page1)
+              {
+              case 1:
+            	  var root = document.getElementById("dataSelect");
+                  $("#dataSelect").empty();
+                  break;
+              case 2:
+            	  var root = document.getElementById("DataSelectSoftMax");
+            	  $("#DataSelectSoftMax").empty();
+            	  break;
+              case 3:
+            	  var root = document.getElementById("DataSelectBayes");
+            	  console.log("run3");
+                  $("#DataSelectBayes").empty();
+                  break;
+              case 4:
+            	  var root = document.getElementById("dataSelect");
+                  $("#dataSelect").empty();
+                  break;
+              }
 	           for(var i = 0;i<data.length;i++)
 	           {
 
@@ -542,7 +700,8 @@ function getdataselect(node){
 		});
 }
 
-/*function editable(select1){
+/*
+function editable(select1){
 	alert("asdf"); 
    console.log("asdf" + select1);
    if(select1.value == ""){  

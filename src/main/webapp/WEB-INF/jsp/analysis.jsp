@@ -15,6 +15,7 @@ body > div .layui-btn-group{display: block;}
 </style>
 <c:import url="global.jsp"></c:import> 
 <script type="text/javascript" src="/jQuery/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="/jQuery/echarts.js"></script>
 </head>
 <body>
   <iframe src="equipTree" class="ssss"></iframe>
@@ -53,7 +54,7 @@ body > div .layui-btn-group{display: block;}
 <fieldset class="layui-elem-field layui-field-title">
   <legend>诊断结果</legend>
 </fieldset>
-<table class="layui-table">
+<!--  <table class="layui-table">
 	<thead class="tr_1">
     <tr>
       <th style="width:20px;"><input type="checkbox" onclick="selectAll(this);" /></th>
@@ -67,8 +68,11 @@ body > div .layui-btn-group{display: block;}
     </tr> 
   </thead>
 </table>
+
 <div id="page" style="margin-top: -20px"></div>
 </div>   
+-->
+ <div id="map" style="width: 600px;height:400px;"></div>
 <script type="text/javascript">
 var parentId;
 var flag;
@@ -133,8 +137,8 @@ function faultpredict(){
 		  contentType : false,
 		  success: function (result){
 			  datas=result.code;
-			  var jsonData = {id:parentId};
-			  clickNode(jsonData);
+			//  var jsonData = {id:parentId};
+			//  clickNode(jsonData);
 			  
 			  layer.msg('加载成功！', {icon: 1,time: 1000,
 					end:function(){
@@ -156,6 +160,55 @@ var currentPage;
 var pageSize;
 var loadingFlag=0;
 function clickNode(node){
+	var myChart = echarts.init(document.getElementById('map'));
+	var axisData = ['周一','周二','周三','很长很长的周四','周五','周六','周日'];
+	var data = axisData.map(function (item, i) {
+	    return Math.round(Math.random() * 1000 * (i + 1));
+	});
+	var links = data.map(function (item, i) {
+	    return {
+	        source: i,
+	        target: i + 1
+	    };
+	});
+	links.pop();
+	option = {
+	    title: {
+	        text: '状态图'
+	    },
+	    tooltip: {},
+	    xAxis: {
+	        type : 'category',
+	        boundaryGap : false,
+	        data : axisData
+	    },
+	    yAxis: {
+	        type : 'value'
+	    },
+	    series: [
+	        {
+	            type: 'graph',
+	            layout: 'none',
+	            coordinateSystem: 'cartesian2d',
+	            symbolSize: 40,
+	            label: {
+	                normal: {
+	                    show: true
+	                }
+	            },
+	            edgeSymbol: ['circle', 'arrow'],
+	            edgeSymbolSize: [4, 10],
+	            data: data,
+	            links: links,
+	            lineStyle: {
+	                normal: {
+	                    color: '#2f4554'
+	                }
+	            }
+	        }
+	    ]
+	};
+	 myChart.setOption(option);
 	parentId = node.id;
 	var formData = new FormData();
 	formData.append("current",!node.current ? "1" : node.current);
@@ -325,7 +378,7 @@ function getmodelparam(data){
 		  processData : false, 
 		  contentType : false,
 		  success: function (result){
-			  console.log(result+"22222222222222");
+			   // console.log(result+"22222222222222");
 				layui.use('layer', function(){ //独立版的layer无需执行这一句
 					  var layer = layui.layer;
 					  var index1 = layer.open({
@@ -351,13 +404,20 @@ function getmodelparam(data){
 function algdetailshow()
 {
 	var model1=document.getElementById("algSelect").value;
-	console.log(model1+"111111111");
+	
 	switch(model1)
 	{
 	case "SVM":		  	
 		var jsonDataModelParam = {id:parentId,model:"SVM"};
      	getmodelparam(jsonDataModelParam);
      	break;
+	case "Softmax":
+		//console.log(model1+"111111111");
+		var jsonDataModelParam = {id:parentId,model:"Softmax"};
+     	getmodelparam(jsonDataModelParam);
+	case "Bayes":
+		var jsonDataModelParam = {id:parentId,model:"Bayes"};
+     	getmodelparam(jsonDataModelParam);
 	}
 }
 
